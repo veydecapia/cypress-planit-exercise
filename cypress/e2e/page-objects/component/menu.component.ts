@@ -8,6 +8,10 @@ class MenuComponent{
     get shopButton(){
         return cy.contains('Shop')
     }
+
+    get  cartButton(){
+        return cy.contains("Cart")
+    }
 }
 
 export default new MenuComponent()
