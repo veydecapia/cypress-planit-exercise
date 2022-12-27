@@ -103,7 +103,7 @@ class CartPage{
 
     /**
      * @description
-     * Gets the expected price from the json file.
+     * Gets the expected price from the json file and compares to the actual price
      * json file should have the complete list of products with expected pricing 
      * json file name: product-price.json
      * path: fixtures/product-price.json
