@@ -26,6 +26,16 @@ class ContactPage{
         return cy.get('#message')
     }
 
+    fillOutContactForm = (
+        forename: string,
+        email: string,
+        message: string
+    ): void => {
+        this.forenameTxtbox.clear().type(forename)
+        this.emailTxtbox.clear().type(email)
+        this.messageTxtArea.clear().type(message)
+    }
+
     
     //**Error Messages */
 
@@ -35,14 +45,14 @@ class ContactPage{
 
     /**
      * @description
-     * 
+     * Gets the error labels and compare to expected error messages
      * @param {string} expectedErrorText 
      * @param {number} expectedNumberOfErrors 
      */
     verifyErrorMessages = (
         expectedErrorText: string,
         expectedNumberOfErrors: number
-    ) => {
+    ): void => {
 
         this.errorLabels.should('have.length', expectedNumberOfErrors)
  
@@ -50,9 +60,11 @@ class ContactPage{
             const text = $object.text();
             cy.log(text)
 
-            cy.wrap($object).invoke('text')
+            cy.wrap($object)
+                .invoke('text')
                 .should((errorText) =>{
-                    expect(errorText).to.contain(expectedErrorText)
+                    expect(errorText)
+                        .to.contain(expectedErrorText)
                 })
         
         })
@@ -66,6 +78,7 @@ class ContactPage{
     }
 
     get sendingFeedbackPopup(){
+        //Add timeout to explicitly wait for popup to hide
         return cy.get('.popup.modal.hide.ng-scope', {timeout: 60000})
     }
 

@@ -1,6 +1,7 @@
 import menuComponent from "../page-objects/component/menu.component";
 import contactPage from "../page-objects/contact.page";
 import homePage from "../page-objects/home.page";
+import contact from "../../fixtures/contactform-details.json"
 
 
 Cypress._.times(5, () =>{
@@ -29,24 +30,21 @@ Cypress._.times(5, () =>{
         //Arrange
         menuComponent.contactButton.click()
   
-        //**Blank fields */
+        //**Blank field test */
         //Act
         contactPage.submitButton.click()
   
         //Assert
         contactPage.headerMessageLabel
-                        .invoke('text')
-                        .should('contain', "but we won't get it unless you complete the form correctly.")
+                .invoke('text')
+                .should('contain', "but we won't get it unless you complete the form correctly.")
   
-        contactPage.verifyErrorMessages('is required', 3) //** Number of error labels should be equal to 3 */
+        //** Number of error labels should be equal to 3 */
+        contactPage.verifyErrorMessages('is required', 3) 
   
         //**Fill out required fields*/
         //Act
-        //TODO: User cypress real events for typing
-        //TODO: Create a json file to store test data values
-        contactPage.forenameTxtbox.clear().type('John')
-        contactPage.emailTxtbox.clear().type('john.example@planit.net.au')
-        contactPage.messageTxtArea.clear().type('This is just a test')
+        contactPage.fillOutContactForm(contact.forename, contact.email, contact.messsage)
   
         //Assert
         contactPage.errorLabels.should('not.exist')
@@ -57,12 +55,11 @@ Cypress._.times(5, () =>{
         menuComponent.contactButton.click()
   
         //Act
-        contactPage.forenameTxtbox.clear().type('John')
-        contactPage.emailTxtbox.clear().type('john.example@planit.net.au')
-        contactPage.messageTxtArea.clear().type('This is just a test')
+        contactPage.fillOutContactForm(contact.forename, contact.email, contact.messsage)
         contactPage.submitButton.click()
         
-        contactPage.sendingFeedbackPopup.should('not.be.visible') //** Wait for the Pop up to disappear
+        //** Wait for the Pop up to disappear before continuing
+        contactPage.sendingFeedbackPopup.should('not.be.visible') 
   
   
         //Assert
