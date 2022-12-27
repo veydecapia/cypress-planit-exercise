@@ -15,7 +15,7 @@ describe('Shop Toys & Add to Cart', () => {
 
     it('should go to shop page', () => {
         cy.url().should('contain', 'shop')
-        //Number of products should be equal to 8
+        //Number of available products should be equal to 8
         shopPage.productsLabel.should('have.length', '8')
     });
 
@@ -29,6 +29,7 @@ describe('Shop Toys & Add to Cart', () => {
 
 
         //Assert
-        cartPage.verifyTableValues(116.9)
+        cartPage.verifyTotal(116.9)
+        cartPage.verifyPrice()
     });
 });

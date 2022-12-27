@@ -1,4 +1,4 @@
-
+import price from "../../fixtures/product-price.json";
 
 class CartPage{
 
@@ -10,10 +10,14 @@ class CartPage{
         return cy.get('tr.cart-item.ng-scope')
     }
 
-    // Get price
-    // Get quantity
-    // Subtotal = price * quantity
-    verifyTableValues = (
+    /**
+     * @description
+     * Does 2 things
+     * 1. Verifies subtotal for each products (subtotal = price * quantity)
+     * 2. Verifies cart total (sum (subtotal))
+     * @param expectedTotal 
+     */
+    verifyTotal = (
         expectedTotal: number
     ) => {
         let price = 0
@@ -58,10 +62,33 @@ class CartPage{
 
     removeDollarSign = (
         text: string
-    ) => {
+    ): string => {
         return text.split('')
                     .splice(1)
                     .join('')
+    }
+
+
+    verifyPrice = () => {
+        let expectedPrice = 0.00;
+
+        this.productRow.each(($row) => {
+            cy.wrap($row).find('td:nth-child(1)')
+                         .invoke('text')
+                         .then((text) => {
+                            cy.log("Text value: " + text)
+                            //Get the expected price
+                            expectedPrice = price[text.trim()]
+                            cy.log("Expected Price : " + expectedPrice)
+                         }).then(() => {
+                            cy.wrap($row).find('td:nth-child(2)')
+                                         .invoke('text')
+                                         .should((text) => {
+                                            expect(Number(this.removeDollarSign(text)))
+                                                        .to.equal(expectedPrice)
+                                         })
+                         })
+        })
     }
 
 }
