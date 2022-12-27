@@ -14,14 +14,26 @@ class ShopPage{
         return this.cartButton.invoke('text')
     }
 
+    productBuyButton = (
+        element: JQuery<HTMLElement>
+    ): Cypress.Chainable<JQuery<HTMLElement>> => {
+        return cy.wrap(element)
+                    .parent()
+                    .contains('Buy')
+    }
+
+    /**
+     * @description
+     * Adds the product to cart
+     * @param {string} productTitle Product to add
+     * @param {number} quantity How many times product will be added to cart
+     */
     addToCart = (
         productTitle: string,
         quantity: number
     ) => {
         this.productsLabel.each(($product) =>{
             const productText = $product.text().trim()
-            cy.log(productText)
-
             if(productText === productTitle){
                  //Click the buy button n times   
                 this.clickBuyButton($product, quantity)
@@ -30,8 +42,14 @@ class ShopPage{
     }
 
 
+    /**
+     * @description
+     * Add product to cart by clicking the buy button n (quantity) times
+     * @param {JQuery<HTMLElement>} productElement 
+     * @param quantity How many times product will be added to cart
+     */
     clickBuyButton = (
-        product: JQuery<HTMLElement>,
+        productElement: JQuery<HTMLElement>,
         quantity: number
     ) => {
         Cypress._.times(quantity, () => {
@@ -40,9 +58,7 @@ class ShopPage{
                 cy.log("Cart count: " + prevCartCount)
 
                 //Click the buy button of the product
-                cy.wrap(product)
-                    .parent()
-                    .contains('Buy')
+                this.productBuyButton(productElement)
                     .click()
                     .then(() =>{
                         //Get the previous value of the cart then add 1
