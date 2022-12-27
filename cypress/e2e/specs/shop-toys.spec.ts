@@ -9,9 +9,9 @@ describe('Shop Toys & Add to Cart', () => {
         cy.visit('/shop')
     });
 
-    // afterEach(() => {
-    //     cy.visit('')
-    // });
+    afterEach(() => {
+        cy.visit('')
+    });
 
     it('should go to shop page', () => {
         cy.url().should('contain', 'shop')
@@ -19,7 +19,7 @@ describe('Shop Toys & Add to Cart', () => {
         shopPage.productsLabel.should('have.length', '8')
     });
 
-    it.only('should buy a toy', () => {
+    it('should buy a toy', () => {
         //Act
         shopPage.addToCart('Stuffed Frog', 2)
         shopPage.addToCart('Fluffy Bunny', 5)
